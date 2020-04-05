@@ -65,12 +65,10 @@ paths:
       produces:
       - "application/json"
       parameters:
-        - in: "path"
-          required: true
-          name: "page"
-          type: "number"
-          default: 0
-          description: "(Opcional) Número de página para ser mostrado. Muestra 25 items"
+        - $ref: '#/parameters/pageParam'
+        - $ref: '#/parameters/limiteParam'
+        - $ref: '#/parameters/fechaDesdeParam'
+        - $ref: '#/parameters/fechaHastaParam'
       responses:
         200:
           description: "Devuelve todas las estadísticas de la base de datos"
@@ -133,12 +131,10 @@ paths:
           - "Santiago del Estero"
           - "Tierra del Fuego"
           - "Tucumán"
-      - in: "path"
-        required: true
-        name: "page"
-        type: "number"
-        default: 0
-        description: "(Opcional) Número de página para ser mostrado. Muestra 25 items"        
+      - $ref: '#/parameters/pageParam'
+      - $ref: '#/parameters/limiteParam'
+      - $ref: '#/parameters/fechaDesdeParam'
+      - $ref: '#/parameters/fechaHastaParam'
       responses:
         200:
           description: "Todos los datos de una provincia"
@@ -176,12 +172,8 @@ paths:
         description: "Fecha a consultar, en formato RFC3339 §5.6"
         required: true
         type: "string"
-      - in: "path"
-        required: true
-        name: "page"
-        type: "number"
-        default: 0
-        description: "(Opcional) Número de página para ser mostrado. Muestra 25 items"           
+      - $ref: '#/parameters/pageParam'
+      - $ref: '#/parameters/limiteParam'
       responses:
         200:
           description: "Todos los datos de una fecha"
@@ -310,6 +302,33 @@ paths:
               error:
                 type: "string"
                 default: "Forbidden"
+parameters:
+  pageParam:
+    in: "path"
+    required: true
+    name: "page"
+    type: "integer"
+    default: 0
+    description: "(Opcional) Número de página para ser mostrado."      
+  limiteParam:
+    name: "limite"
+    in: "query"
+    type: "integer"
+    required: false
+    default: 25
+    description: "Cantidad de registros por página que devuelve la consulta. Se pueden devolver todos los registros disponibles en una sola página estableciendo limite = -1."
+  fechaDesdeParam:
+    name: "fechaDesde"
+    in: "query"
+    type: "string"
+    required: false
+    description: "Si se establece, la consulta sólo devuelve registros posteriores a esta fecha. En formato RFC3339 §5.6"
+  fechaHastaParam:
+    name: "fechaHasta"
+    in: "query"
+    type: "string"
+    required: false
+    description: "Si se establece, la consulta sólo devuelve registros anteriores a esta fecha. En formato RFC3339 §5.6"
 definitions:
   User:
     type: "object"
